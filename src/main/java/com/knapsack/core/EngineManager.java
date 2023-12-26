@@ -1,5 +1,6 @@
 package com.knapsack.core;
 
+import com.knapsack.core.test.Launcher;
 import com.knapsack.core.utils.Constants;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;

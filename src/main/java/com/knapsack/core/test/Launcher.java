@@ -1,5 +1,8 @@
-package com.knapsack.core;
+package com.knapsack.core.test;
 
+import com.knapsack.core.EngineManager;
+import com.knapsack.core.WindowManager;
+import com.knapsack.core.test.TestGame;
 import com.knapsack.core.utils.Constants;
 
 public class Launcher {
