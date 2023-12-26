@@ -20,6 +20,7 @@ public class WindowManager {
 
     private boolean resize, vSync;
 
+    //4x4 matrix, used to transform 3D coordinates into 2D screen coordinates in graphics rendering
     private final Matrix4f projectionMatrix;
 
     public WindowManager(String title, int width, int height, boolean vSync) {
@@ -46,6 +47,8 @@ public class WindowManager {
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
 
         boolean maximized = false;
+
+        //set window size to maximum if width or height is zero
         if(width == 0 || height == 0) {
             height = 100;
             width = 100;
@@ -65,13 +68,14 @@ public class WindowManager {
            this.setResize(true);
         });
 
+        //close window if ESC key is pressed
         GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
            if(key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE){
                GLFW.glfwSetWindowShouldClose(window, true);
            }
         });
 
-        //maximize or position window in the centre of the screen
+        //maximize or position the window in the centre of the screen
         if(maximized){
             GLFW.glfwMaximizeWindow(window);
         } else{
@@ -79,6 +83,7 @@ public class WindowManager {
             GLFW.glfwSetWindowPos(window, (vidMode.width() - width)/ 2, (vidMode.height() - height)/ 2);
         }
 
+        // Set the OpenGL context associated with the window as the current context
         GLFW.glfwMakeContextCurrent(window);
 
         if(isvSync()){
@@ -88,6 +93,7 @@ public class WindowManager {
         //display the window
         GLFW.glfwShowWindow(window);
 
+        // make LWJGL interact properly with the native OpenGL library and use its functions
         GL.createCapabilities();
 
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -98,7 +104,9 @@ public class WindowManager {
     }
 
     public void update(){
+        // Swap the front and back buffers to display the rendered image
         GLFW.glfwSwapBuffers(window);
+        // Poll and process events such as keyboard and mouse input
         GLFW.glfwPollEvents();
     }
 

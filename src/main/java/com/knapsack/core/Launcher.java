@@ -1,14 +1,22 @@
 package com.knapsack.core;
+
+import com.knapsack.core.utils.Constants;
+
 public class Launcher {
+    private static WindowManager window;
+    private static EngineManager engine;
     public static void main(String[] args){
-        System.out.println("Idk");
-        WindowManager window = new WindowManager("Knapsack",600, 450, false);
-        window.init();
+        window = new WindowManager(Constants.TITLE,600, 450, false);
+        engine = new EngineManager();
 
-        while(!window.windowShouldClose()){
-            window.update();
+        try{
+            engine.start();
+        } catch(Exception e){
+            e.printStackTrace();
         }
+    }
 
-        window.cleanup();
+    public static WindowManager getWindow() {
+        return window;
     }
 }
