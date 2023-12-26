@@ -5,6 +5,7 @@ import com.knapsack.core.ObjectLoader;
 import com.knapsack.core.RenderManager;
 import com.knapsack.core.WindowManager;
 import com.knapsack.core.entity.Model;
+import com.knapsack.core.entity.Texture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -30,16 +31,35 @@ public class TestGame implements ILogic {
         renderer.init();
 
         //verticies to create a rectangle
-        float[] verticies = {
-                -0.5f, 0.5f, 0f,
+//        float[] vertices = {
+//                -0.5f,  0.5f, 0f,  // Top-left
+//                -0.5f, -0.5f, 0f,  // Bottom-left
+//                0.5f, -0.5f, 0f,   // Bottom-right
+//                0.5f, -0.5f, 0f,   // Bottom-right (repeated for the second triangle)
+//                0.5f,  0.5f, 0f,   // Top-right
+//                -0.5f,  0.5f, 0f   // Top-left (repeated for the second triangle)
+//        };
+
+        float[] vertices = {
+                -0.5f,  0.5f, 0f,
                 -0.5f, -0.5f, 0f,
                 0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f,
-                -0.5f, 0.5f, 0f
+                0.5f,  0.5f, 0f,
         };
 
-        model = loader.loadModel(verticies);
+        int[] indicies = {
+                0,1,3,
+                3,1,2
+        };
+
+        float[] textureCoords = {
+                0,0,
+                0,1,
+                1,1,
+                1,0
+        };
+        model = loader.loadModel(vertices, textureCoords,indicies);
+        model.setTexture(new Texture(loader.loadTexture("textures/Grass_Block.png")));
     }
 
     @Override
