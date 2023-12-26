@@ -4,8 +4,10 @@ import com.knapsack.core.ILogic;
 import com.knapsack.core.ObjectLoader;
 import com.knapsack.core.RenderManager;
 import com.knapsack.core.WindowManager;
+import com.knapsack.core.entity.Entity;
 import com.knapsack.core.entity.Model;
 import com.knapsack.core.entity.Texture;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -18,7 +20,7 @@ public class TestGame implements ILogic {
     private final ObjectLoader loader;
     private final WindowManager window;
 
-    private Model model;
+    private Entity entity;
 
     public TestGame(){
         renderer = new RenderManager();
@@ -58,8 +60,9 @@ public class TestGame implements ILogic {
                 1,1,
                 1,0
         };
-        model = loader.loadModel(vertices, textureCoords,indicies);
+        Model model = loader.loadModel(vertices, textureCoords,indicies);
         model.setTexture(new Texture(loader.loadTexture("textures/Grass_Block.png")));
+        entity = new Entity(model, new Vector3f(1,0,0), new Vector3f(0,0,0), 1);
     }
 
     @Override
@@ -82,6 +85,13 @@ public class TestGame implements ILogic {
         } else if(color <= 0){
             color = 0.0f;
         }
+
+        if(entity.getPos().x < -1.5f){
+            entity.getPos().x = 1.5f;
+        }
+
+        //move entity from right to left
+        entity.getPos().x -= 0.01f;
     }
 
     @Override
@@ -92,7 +102,7 @@ public class TestGame implements ILogic {
         }
 
         window.setClearColor(color, color, color, 0.0f);
-        renderer.render(model);
+        renderer.render(entity);
     }
 
     @Override
