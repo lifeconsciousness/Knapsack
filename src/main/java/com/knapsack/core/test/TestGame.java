@@ -4,6 +4,8 @@ import com.knapsack.core.*;
 import com.knapsack.core.entity.Entity;
 import com.knapsack.core.entity.Model;
 import com.knapsack.core.entity.Texture;
+import com.knapsack.core.utils.Constants;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -95,7 +97,7 @@ public class TestGame implements ILogic {
         };
 
 
-        Model model = loader.loadModel(vertices, textureCoords,indices);
+        Model model = loader.loadModel(vertices, textureCoords, indices);
         model.setTexture(new Texture(loader.loadTexture("textures/Grass_Block.png")));
         entity = new Entity(model, new Vector3f(0,0,-4), new Vector3f(0,0,0), 1);
     }
@@ -124,13 +126,18 @@ public class TestGame implements ILogic {
         if(window.isKeyPressed(GLFW.GLFW_KEY_X)  || window.isKeyPressed(GLFW.GLFW_KEY_UP)){
             cameraInc.y = 1;
         }
-
-        //TODO: add mouse controls
     }
 
     @Override
-    public void update() {
+    public void update(float interval, MouseInput mouseInput) {
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED, cameraInc.y * CAMERA_MOVE_SPEED, cameraInc.z * CAMERA_MOVE_SPEED);
+
+        if(mouseInput.isLeftButtonPress()){
+            Vector2f rotVector = mouseInput.getDisplayVector();
+            camera.moveRotation(rotVector.x * Constants.MOUSE_SENSITIVITY, rotVector.y * Constants.MOUSE_SENSITIVITY, 0);
+
+        }
+
         entity.incrementRotation(0.0f, 0.1f, 0.0f);
     }
 
