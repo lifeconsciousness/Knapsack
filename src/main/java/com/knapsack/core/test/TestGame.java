@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 public class TestGame implements ILogic {
 
-    private static final float CAMERA_MOVE_SPEED = 0.02f;
+    private static final float CAMERA_MOVE_SPEED = 0.015f;
 
     private int direction = 0;
     private float color  = 0.0f;
@@ -20,6 +20,7 @@ public class TestGame implements ILogic {
     private final WindowManager window;
 
     private Entity entity;
+    private Entity entity1;
     private Camera camera;
 
     Vector3f cameraInc;
@@ -35,6 +36,10 @@ public class TestGame implements ILogic {
     @Override
     public void init() throws Exception {
         renderer.init();
+
+        //TODO: visualize pentominoes using 3D matrices
+        //TODO: add three dimentional matrix to store all pentominoes
+        //TODO: comment everything !!!!
 
         float[] vertices = new float[] {
                 -0.5f, 0.5f, 0.5f,
@@ -104,18 +109,23 @@ public class TestGame implements ILogic {
         if(window.isKeyPressed(GLFW.GLFW_KEY_S)){
             cameraInc.z = 1;
         }
-        if(window.isKeyPressed(GLFW.GLFW_KEY_A)){
+
+        // TODO: instead of moving horizontally moves vertically, fix that
+        if(window.isKeyPressed(GLFW.GLFW_KEY_A) || window.isKeyPressed(GLFW.GLFW_KEY_LEFT)){
             cameraInc.x = -1;
         }
-        if(window.isKeyPressed(GLFW.GLFW_KEY_D)){
+        if(window.isKeyPressed(GLFW.GLFW_KEY_D) || window.isKeyPressed(GLFW.GLFW_KEY_RIGHT)){
             cameraInc.x = 1;
         }
+
         if(window.isKeyPressed(GLFW.GLFW_KEY_Z) || window.isKeyPressed(GLFW.GLFW_KEY_DOWN)){
             cameraInc.y = -1;
         }
         if(window.isKeyPressed(GLFW.GLFW_KEY_X)  || window.isKeyPressed(GLFW.GLFW_KEY_UP)){
             cameraInc.y = 1;
         }
+
+        //TODO: add mouse controls
     }
 
     @Override
