@@ -4,6 +4,7 @@ import com.knapsack.core.*;
 import com.knapsack.core.entity.Entity;
 import com.knapsack.core.entity.Model;
 import com.knapsack.core.entity.Texture;
+import com.knapsack.core.entity.Shapes;
 import com.knapsack.core.utils.Constants;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -13,10 +14,10 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-
 public class TestGame implements ILogic {
+    //TODO: visualize pentominoes using 3D matrices
+    //TODO: add three dimentional matrix to store all pentominoes
+    //TODO: comment everything !!!!
 
     private static final float CAMERA_MOVE_SPEED = 0.015f;
 
@@ -29,8 +30,12 @@ public class TestGame implements ILogic {
 
     private List<Entity> entities;
     private Camera camera;
-
     Vector3f cameraInc;
+
+    public static final int depth = 10;
+    public static final int rows = 5;
+    public static final int columns = 7;
+    public static int[][][] field = new int[depth][rows][columns];
 
     public TestGame(){
         renderer = new RenderManager();
@@ -44,114 +49,42 @@ public class TestGame implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
-        //TODO: visualize pentominoes using 3D matrices
-        //TODO: add three dimentional matrix to store all pentominoes
-        //TODO: comment everything !!!!
-
-        float[] vertices = new float[] {
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-        };
-
-        float[] textureCoords = new float[]{
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-
-        int[] indices = new int[]{
-                0, 1, 3, 3, 1, 2,
-                8, 10, 11, 9, 8, 11,
-                12, 13, 7, 5, 12, 7,
-                14, 15, 6, 4, 14, 6,
-                16, 18, 19, 17, 16, 19,
-                4, 6, 7, 5, 4, 7,
-        };
-
-
-
-        //rectangle 1x1x2
-
-//        float[] vertices = new float[] {
-//                -0.5f,  0.5f,  1.0f,  // Vertex 0
-//                -0.5f, -0.5f,  1.0f,  // Vertex 1
-//                0.5f, -0.5f,  1.0f,  // Vertex 2
-//                0.5f,  0.5f,  1.0f,  // Vertex 3
-//
-//                -0.5f,  0.5f, -1.0f,  // Vertex 4
-//                0.5f,  0.5f, -1.0f,  // Vertex 5
-//                -0.5f, -0.5f, -1.0f,  // Vertex 6
-//                0.5f, -0.5f, -1.0f   // Vertex 7
-//        };
-//        float[] textureCoords = new float[]{
-//                0.0f, 0.0f,
-//                0.0f, 1.0f,
-//                1.0f, 1.0f,
-//                1.0f, 0.0f,
-//
-//                0.0f, 0.0f,
-//                1.0f, 0.0f,
-//                0.0f, 1.0f,
-//                1.0f, 1.0f
-//        };
-//
-//        int[] indices = new int[]{
-//                0, 1, 3, 3, 1, 2, // Front face
-//                4, 5, 7, 7, 5, 6, // Back face
-//                0, 1, 4, 4, 1, 5, // Left face
-//                2, 3, 6, 6, 3, 7, // Right face
-//                0, 2, 4, 4, 2, 6, // Top face
-//                1, 3, 5, 5, 3, 7  // Bottom face
-//        };
-
-
-        Model model = loader.loadModel(vertices, textureCoords, indices);
-        model.setTexture(new Texture(loader.loadTexture("textures/green.png")));
-
+        Shapes shapesInstance = new Shapes();
+        Shapes.Cube cube = shapesInstance.new Cube();
         entities = new ArrayList<>();
 
-        for(int i = 0; i < 5; i++){
-            float x = i * 2;
-            float y = 0;
-            float z = -4;
-            entities.add(new Entity(model, new Vector3f(x,y,z), new Vector3f(0,0,0), 1));
+        Model green = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
+        green.setTexture(new Texture(loader.loadTexture("textures/green.png")));
+        Model blue = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
+        blue.setTexture(new Texture(loader.loadTexture("textures/blue.png")));
+        Model white = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
+        white.setTexture(new Texture(loader.loadTexture("textures/white.png")));
+        // bottom
+        entities.add(new Entity(white, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f));
+
+
+        // manipulating and displaying the field
+
+        MatrixManipulation.emptyField(field);
+        MatrixManipulation.displayField(field);
+
+
+        //render the matrix
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                for (int k = 0; k < field[i][j].length; k++) {
+                    float x = k;
+                    float y = j;
+                    float z = i;
+
+                    if(field[i][j][k] == -1){
+                        entities.add(new Entity(blue, new Vector3f(x,y,z), new Vector3f(0,0,0), 0.5f));
+                    }
+                }
+            }
         }
-//        entity = new Entity(model, new Vector3f(0,0,-4), new Vector3f(0,0,0), 1);
+
+
     }
 
     @Override

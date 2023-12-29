@@ -8,7 +8,7 @@ public class Camera {
     private Vector3f position, rotation;
 
     public Camera(){
-        position = new Vector3f(0,0,0);
+        position = new Vector3f(3,2,15);
         rotation = new Vector3f(0,0,0);
     }
 
