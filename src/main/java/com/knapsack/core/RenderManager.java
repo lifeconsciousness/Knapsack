@@ -34,7 +34,7 @@ public class RenderManager {
         shader.createUniform("transformationMatrix");
         shader.createUniform("projectionMatrix");
         shader.createUniform("viewMatrix");
-        shader.createUniform("colorValue");
+//        shader.createUniform("colorValue");
     }
 
     public void bind(Model model){
@@ -56,7 +56,7 @@ public class RenderManager {
 //        shader.setUniform("textureSampler", 0);
         shader.setUniform("transformationMatrix", Transformations.createTransformationMatrix(entity));
         shader.setUniform("viewMatrix", Transformations.getViewMatrix(camera));
-        shader.setUniform("colorValue", 2);
+//        shader.setUniform("colorValue", 2);
     }
 
     public void render(Camera camera){
