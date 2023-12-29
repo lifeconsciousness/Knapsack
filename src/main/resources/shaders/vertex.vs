@@ -9,9 +9,16 @@ out vec3 color;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+uniform int colorValue;
+
 
 void main(){
     gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
-    color = vec3(position.x + 0.25, 0.17, position.y + 0.25);
+    if(colorValue == 0){
+        color = vec3(position.x + 0.25, 0.17, position.y + 0.25);
+    } else{
+        color = vec3(0.25, 0.17, 0.25);
+    }
+
     // fragTextureCoord = textureCoord;
 }
