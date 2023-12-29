@@ -35,6 +35,7 @@ public class ObjectLoader {
         return new Model(id, indices.length);
     }
 
+
     public int loadTexture(String filename) throws Exception {
         int width, height;
         ByteBuffer buffer;

@@ -30,7 +30,7 @@ public class RenderManager {
         shader.createVertexShader(Utils.loadResource("/shaders/vertex.vs"));
         shader.createFragmentShader(Utils.loadResource("/shaders/fragment.fs"));
         shader.link();
-        shader.createUniform("textureSampler");
+//        shader.createUniform("textureSampler");
         shader.createUniform("transformationMatrix");
         shader.createUniform("projectionMatrix");
         shader.createUniform("viewMatrix");
@@ -41,8 +41,8 @@ public class RenderManager {
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
 
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getId());
+//        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getId());
     }
 
     public void unbind(){
@@ -52,7 +52,7 @@ public class RenderManager {
     }
 
     public void prepare(Entity entity, Camera camera){
-        shader.setUniform("textureSampler", 0);
+//        shader.setUniform("textureSampler", 0);
         shader.setUniform("transformationMatrix", Transformations.createTransformationMatrix(entity));
         shader.setUniform("viewMatrix", Transformations.getViewMatrix(camera));
     }
@@ -73,8 +73,6 @@ public class RenderManager {
             }
             unbind();
         }
-
-//        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, entity.getModel().getVertexCount());
 
         entities.clear();
         shader.unbind();

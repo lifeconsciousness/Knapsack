@@ -54,11 +54,12 @@ public class TestGame implements ILogic {
         entities = new ArrayList<>();
 
         Model green = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
-        green.setTexture(new Texture(loader.loadTexture("textures/green.png")));
+//        green.setTexture(new Texture(loader.loadTexture("textures/green.png")));
         Model blue = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
-        blue.setTexture(new Texture(loader.loadTexture("textures/blue.png")));
+//        blue.setTexture(new Texture(loader.loadTexture("textures/blue.png")));
         Model white = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
-        white.setTexture(new Texture(loader.loadTexture("textures/white.png")));
+//        white.setTexture(new Texture(loader.loadTexture("textures/white.png")));
+
         // bottom
         entities.add(new Entity(white, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f));
 
