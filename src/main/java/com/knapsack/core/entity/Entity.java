@@ -6,12 +6,14 @@ public class Entity {
     private Model model;
     private Vector3f pos, rotation;
     private float scale;
+    private int index;
 
-    public Entity(Model model, Vector3f pos, Vector3f rotation, float scale) {
+    public Entity(Model model, Vector3f pos, Vector3f rotation, float scale, int index) {
         this.model = model;
         this.pos = pos;
         this.rotation = rotation;
         this.scale = scale;
+        this.index = index;
     }
 
     public void incrementPos(float x, float y, float z){
@@ -50,6 +52,10 @@ public class Entity {
 
     public float getScale() {
         return scale;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }
 

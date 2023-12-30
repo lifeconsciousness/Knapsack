@@ -1,10 +1,7 @@
 package com.knapsack.core.test;
 
 import com.knapsack.core.*;
-import com.knapsack.core.entity.Entity;
-import com.knapsack.core.entity.Model;
-import com.knapsack.core.entity.Texture;
-import com.knapsack.core.entity.Shapes;
+import com.knapsack.core.entity.*;
 import com.knapsack.core.utils.Constants;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -29,6 +26,7 @@ public class TestGame implements ILogic {
     private final WindowManager window;
 
     private List<Entity> entities;
+
     private Camera camera;
     Vector3f cameraInc;
 
@@ -60,27 +58,30 @@ public class TestGame implements ILogic {
         Model white = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
 //        white.setTexture(new Texture(loader.loadTexture("textures/white.png")));
 
-        // bottom
-        entities.add(new Entity(white, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f));
+        //bottom
+        entities.add(new Entity(white, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f, 0));
 
 
         // manipulating and displaying the field
 
-        MatrixManipulation.emptyField(field);
-        MatrixManipulation.displayField(field);
+        field = MatrixManipulation.emptyField(field);
+
+        MatrixManipulation.add(field, Polycubes.aParcel, 2, 1,5);
+        boolean canAdd = MatrixManipulation.canAdd(field, Polycubes.aParcel, -2, 1,5);
+        System.out.println(canAdd);
+//        MatrixManipulation.displayField(field);
 
 
         //render the matrix
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 for (int k = 0; k < field[i][j].length; k++) {
-                    float x = k;
-                    float y = j;
+                    // X AND Y ARE REVERTED TO HAVE A BETTER VISUAL REPRESENTATION OF ROWS AND COLUMNS (THE GO FROM TOP TO BOTTOM, LEFT TO RIGHT INSTEAD OF THE OTHER WAY AROUND)
+                    float x = -k;
+                    float y = -j;
                     float z = i;
 
-                    if(field[i][j][k] == -1){
-                        entities.add(new Entity(blue, new Vector3f(x,y,z), new Vector3f(0,0,0), 0.5f));
-                    }
+                    entities.add(new Entity(blue, new Vector3f(x,y,z), new Vector3f(0,0,0), 0.5f, field[i][j][k]));
                 }
             }
         }
@@ -98,7 +99,7 @@ public class TestGame implements ILogic {
             cameraInc.z = 1;
         }
 
-        // TODO: instead of moving horizontally moves vertically, fix that
+        // normal
         if(window.isKeyPressed(GLFW.GLFW_KEY_A) || window.isKeyPressed(GLFW.GLFW_KEY_LEFT)){
             cameraInc.x = -1;
         }

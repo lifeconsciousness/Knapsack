@@ -8,8 +8,9 @@ public class Camera {
     private Vector3f position, rotation;
 
     public Camera(){
-        position = new Vector3f(3,2,15);
-        rotation = new Vector3f(0,0,0);
+//        position = new Vector3f(3,2,-8); // without reverted x,y
+        position = new Vector3f(-3,-2,-8); // with reverted x,y
+        rotation = new Vector3f(0, 180,0);
     }
 
     public Camera(Vector3f position, Vector3f rotation){

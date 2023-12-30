@@ -5,6 +5,7 @@ import com.knapsack.core.entity.Model;
 import com.knapsack.core.test.Launcher;
 import com.knapsack.core.utils.Transformations;
 import com.knapsack.core.utils.Utils;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -27,14 +28,17 @@ public class RenderManager {
 
     public void init() throws Exception{
         shader = new ShaderManager();
+        //if color mode load these, if texture mode load vertexTexture and fragmentTexture
         shader.createVertexShader(Utils.loadResource("/shaders/vertex.vs"));
         shader.createFragmentShader(Utils.loadResource("/shaders/fragment.fs"));
         shader.link();
-//        shader.createUniform("textureSampler");
+
         shader.createUniform("transformationMatrix");
         shader.createUniform("projectionMatrix");
         shader.createUniform("viewMatrix");
-//        shader.createUniform("colorValue");
+
+//        shader.createUniform("textureSampler");
+        shader.createUniform("colorValue");
     }
 
     public void bind(Model model){
@@ -54,9 +58,20 @@ public class RenderManager {
 
     public void prepare(Entity entity, Camera camera){
 //        shader.setUniform("textureSampler", 0);
+
         shader.setUniform("transformationMatrix", Transformations.createTransformationMatrix(entity));
         shader.setUniform("viewMatrix", Transformations.getViewMatrix(camera));
-//        shader.setUniform("colorValue", 2);
+
+        //set color of a cube based on its index
+
+        int index = entity.getIndex();
+        if(index == -1){
+            //white
+            shader.setUniform("colorValue", new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
+        }else if(index == 1){
+            // blue
+            shader.setUniform("colorValue", new Vector4f(0, 1, 1.0f, 1.0f));
+        }
     }
 
     public void render(Camera camera){
