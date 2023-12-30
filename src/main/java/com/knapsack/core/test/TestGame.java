@@ -63,13 +63,14 @@ public class TestGame implements ILogic {
 
 
         // manipulating and displaying the field
-
         field = MatrixManipulation.emptyField(field);
 
-        MatrixManipulation.add(field, Polycubes.aParcel, 2, 1,5);
+//        MatrixManipulation.add(field, Polycubes.aParcel, 2, 1,5);
+        MatrixManipulation.add(field, Polycubes.aParcel, 4, 0,0);
+        MatrixManipulation.add(field, MatrixManipulation.rotateAlongY(Polycubes.aParcel), 0, 0,0);
+//        MatrixManipulation.add(field, MatrixManipulation.rotateAlongX(Polycubes.aParcel), 0, 0,0);
         boolean canAdd = MatrixManipulation.canAdd(field, Polycubes.aParcel, -2, 1,5);
         System.out.println(canAdd);
-//        MatrixManipulation.displayField(field);
 
 
         //render the matrix

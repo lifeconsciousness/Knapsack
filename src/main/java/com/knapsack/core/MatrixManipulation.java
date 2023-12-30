@@ -4,14 +4,85 @@ public class MatrixManipulation {
     // how 3d matrix goes:
     // depth -> rows -> columns
 
+
+    // like rotation of a wheel
+    //  -->
+    //    |
+    //<-- v
+    public static int[][][] rotateAlongX (int[][][] matrix){
+        int depth = matrix.length;
+        int rows = matrix[0].length;
+        int cols = matrix[0][0].length;
+
+        int[][][] rotatedMatrix = new int[depth][cols][rows];
+
+        for (int i = 0; i < depth; i++) {
+            for (int j = 0; j < rows; j++) {
+                for (int k = 0; k < cols; k++) {
+                    // Rotate along the x-axis (rows)
+                    rotatedMatrix[i][k][rows - 1 - j] = matrix[i][j][k];
+                }
+            }
+        }
+
+        return rotatedMatrix;
+    }
+
+    //INCORRECT (additionally rotates along X axis)
+    // like stripper on the pole
+    // --->
+    //  <---
+    public static int[][][] rotateAlongY(int[][][] matrix) {
+        int depth = matrix.length;
+        int rows = matrix[0].length;
+        int cols = matrix[0][0].length;
+
+        int[][][] rotatedMatrix = new int[cols][rows][depth];
+
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                for (int k = 0; k < depth; k++) {
+                    // Rotate along the y-axis (columns)
+                    rotatedMatrix[i][j][k] = matrix[k][j][i];
+                }
+            }
+        }
+
+        return rotatedMatrix;
+    }
+
+
+    // like doing a backflip
+    //  ^ ->
+    //  |  |
+    //  |  v
+    public static int[][][] rotateAlongZ (int[][][] matrix){
+        int depth = matrix.length;
+        int rows = matrix[0].length;
+        int cols = matrix[0][0].length;
+
+        int[][][] rotatedMatrix = new int[rows][depth][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < depth; j++) {
+                for (int k = 0; k < cols; k++) {
+                    // Rotate along the z-axis (depth)
+                    rotatedMatrix[i][j][k] = matrix[j][rows - 1 - i][k];
+                }
+            }
+        }
+
+        return rotatedMatrix;
+    }
+
     public static boolean canAdd (int[][][] field, int[][][] polycube, int depth, int rows, int columns){
         //check if trying to add out of bounds of the field
-
         try {
             if (depth + polycube.length > field.length || rows + polycube[0].length > field[0].length || columns + polycube[0][0].length > field[0][0].length) {
                 return false;
             }
 
+            // check if there's any other polycubes on that position
             //depth
             for (int i = 0; i < polycube.length; i++) {
                 //rows
