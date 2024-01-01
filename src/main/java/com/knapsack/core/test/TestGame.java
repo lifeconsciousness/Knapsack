@@ -47,28 +47,19 @@ public class TestGame implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
-        Shapes shapesInstance = new Shapes();
-        Shapes.Cube cube = shapesInstance.new Cube();
         entities = new ArrayList<>();
 
-        Model green = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
-//        green.setTexture(new Texture(loader.loadTexture("textures/green.png")));
-        Model blue = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
-//        blue.setTexture(new Texture(loader.loadTexture("textures/blue.png")));
-        Model white = loader.loadModel(cube.vertices, cube.textureCoords, cube.indices);
-//        white.setTexture(new Texture(loader.loadTexture("textures/white.png")));
+        Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
 
         //bottom
-        entities.add(new Entity(white, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f, 0));
+        entities.add(new Entity(cubeModel, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f, 0));
 
 
         // manipulating and displaying the field
         field = MatrixManipulation.emptyField(field);
 
-//        MatrixManipulation.add(field, Polycubes.aParcel, 2, 1,5);
         MatrixManipulation.add(field, Polycubes.aParcel, 4, 0,0);
         MatrixManipulation.add(field, MatrixManipulation.rotateAlongY(Polycubes.aParcel), 0, 0,0);
-//        MatrixManipulation.add(field, MatrixManipulation.rotateAlongX(Polycubes.aParcel), 0, 0,0);
         boolean canAdd = MatrixManipulation.canAdd(field, Polycubes.aParcel, -2, 1,5);
         System.out.println(canAdd);
 
@@ -82,7 +73,7 @@ public class TestGame implements ILogic {
                     float y = -j;
                     float z = i;
 
-                    entities.add(new Entity(blue, new Vector3f(x,y,z), new Vector3f(0,0,0), 0.5f, field[i][j][k]));
+                    entities.add(new Entity(cubeModel, new Vector3f(x,y,z), new Vector3f(0,0,0), 0.5f, field[i][j][k]));
                 }
             }
         }
