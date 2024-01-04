@@ -8,8 +8,7 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TestGame implements ILogic {
     //TODO: visualize pentominoes using 3D matrices
@@ -25,7 +24,7 @@ public class TestGame implements ILogic {
     private final ObjectLoader loader;
     private final WindowManager window;
 
-    private List<Entity> entities;
+    private List<Entity> entities = new ArrayList<>();
 
     private Camera camera;
     Vector3f cameraInc;
@@ -33,7 +32,8 @@ public class TestGame implements ILogic {
     public static final int depth = 10;
     public static final int rows = 5;
     public static final int columns = 7;
-    public static int[][][] field = new int[depth][rows][columns];
+    int searchDepth;
+    public int[][][] field = new int[depth][rows][columns];
 
     public TestGame(){
         renderer = new RenderManager();
@@ -54,17 +54,22 @@ public class TestGame implements ILogic {
         //bottom
         entities.add(new Entity(cubeModel, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f, 0));
 
-
         // manipulating and displaying the field
         field = MatrixManipulation.emptyField(field);
 
-        MatrixManipulation.add(field, Polycubes.aParcel, 4, 0,0);
-        MatrixManipulation.add(field, MatrixManipulation.rotateAlongY(Polycubes.aParcel), 0, 0,0);
-        boolean canAdd = MatrixManipulation.canAdd(field, Polycubes.aParcel, -2, 1,5);
-        System.out.println(canAdd);
-
+        MatrixManipulation.add(field, Polycubes.aParcel, 0,0,0);
 
         //render the matrix
+        renderField();
+    }
+
+    public void searchTest() throws InterruptedException {
+
+    }
+
+    public void renderField(){
+        Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
+
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 for (int k = 0; k < field[i][j].length; k++) {
@@ -77,8 +82,31 @@ public class TestGame implements ILogic {
                 }
             }
         }
+    }
 
+    public void colorRandomBlock(){
+        Random random = new Random();
+        entities.get(random.nextInt(200)).setIndex(1);
+        entities.get(random.nextInt(200)).setIndex(1);
+    }
 
+    public void colorBlock(){
+        int counter = 1;
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                for (int k = 0; k < field[i][j].length; k++) {
+                    entities.get(counter).setIndex(field[i][j][k]);
+                    counter++;
+                }
+            }
+        }
+    }
+
+    public void emptyVisualization(){
+        for(Entity entity : entities){
+            entity.setIndex(-1);
+        }
     }
 
     @Override
@@ -114,29 +142,27 @@ public class TestGame implements ILogic {
         if(mouseInput.isLeftButtonPress()){
             Vector2f rotVector = mouseInput.getDisplayVector();
             camera.moveRotation(rotVector.x * Constants.MOUSE_SENSITIVITY, rotVector.y * Constants.MOUSE_SENSITIVITY, 0);
-
         }
 
         for(Entity entity : entities){
             renderer.processEntity(entity);
         }
-//        entity.incrementRotation(0.0f, 0.1f, 0.0f);
     }
 
     @Override
     public void render() {
+        emptyVisualization();
+
         if(window.isResize()){
             GL11.glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResize(true);
         }
 
+        colorBlock();
+
         window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-//        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE); // Set polygon mode to draw only edges
         renderer.render(camera);
-//        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL); // Restore polygon mode to fill faces
     }
-
-
 
     @Override
     public void cleanup() {

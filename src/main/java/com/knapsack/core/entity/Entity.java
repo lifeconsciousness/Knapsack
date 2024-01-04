@@ -57,5 +57,9 @@ public class Entity {
     public int getIndex() {
         return index;
     }
+
+    public void setIndex(int newIndex){
+        this.index = newIndex;
+    }
 }
 
