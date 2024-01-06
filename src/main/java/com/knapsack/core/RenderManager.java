@@ -55,6 +55,8 @@ public class RenderManager {
         GL30.glBindVertexArray(0);
     }
 
+    int counter = 0;
+
     public void prepare(Entity entity, Camera camera){
 //        shader.setUniform("textureSampler", 0);
 
@@ -66,41 +68,40 @@ public class RenderManager {
         if(index == -1){
             //white
             shader.setUniform("colorValue", new Vector4f(1.0f, 1.0f, 1.0f, 0.5f));
-        }
+        } else{
+            float fractionalPart = ((index % 1.0f) * 12);
 
-//        if(index != -1){
-//            // set color to random variation of blue, green or pink according to the index
-//            float red = random.nextFloat();
-//            float green = random.nextFloat();
-//            float blue;
-//
-//            if (index == 1) {
-//                // Blue
-//                blue = 1.0f;
-//            } else if (index == 2) {
-//                // Green
-//                blue = 0.0f;
-//            } else {
-//                // Pink
-//                blue = 1.0f;
-//            }
-//
-//            shader.setUniform("colorValue", new Vector4f(red, green, blue, 1.0f));
-//        }
+            float brightnessFactor = 1.0f;
 
+            Vector4f primaryColor;
 
-        //old code for coloring
-        else if(index == 1){
-            // blue
-            shader.setUniform("colorValue", new Vector4f(0, 1.0f, 1.0f, 1.0f));
-        }else if(index == 2){
-            // green
-            shader.setUniform("colorValue", new Vector4f(0, 1.0f, 0, 1.0f));
-        }else if(index == 3){
-            // pink
-            shader.setUniform("colorValue", new Vector4f(1, 0, 1, 1.0f));
+            if (index >= 1 && index < 2) {
+                // Interpolate between blue (0, 0, 1) and purple (0.5, 0, 1)
+                primaryColor = new Vector4f(0, 0, 1.0f, 1.0f).lerp(new Vector4f(0.5f, 0, 1.0f, 1.0f), fractionalPart);
+                // Apply brightness factor to primary color
+                primaryColor.mul(brightnessFactor);
+            } else if (index >= 2 && index < 3) {
+                // Interpolate between green (0, 1, 0) and yellow (1, 1, 0)
+                primaryColor = new Vector4f(0, 1.0f, 0, 1.0f).lerp(new Vector4f(1, 1, 0, 1.0f), fractionalPart);
+                // Apply brightness factor to primary color
+                primaryColor.mul(brightnessFactor);
+            } else if (index >= 3 && index < 4) {
+                // Interpolate between pink (1, 0, 1) and purple (1, 0, 0)
+                primaryColor = new Vector4f(1, 0, 1, 1.0f).lerp(new Vector4f(1, 0, 0, 1.0f), fractionalPart);
+                // Apply brightness factor to primary color
+                primaryColor.mul(brightnessFactor);
+            } else {
+                // Handle other cases if needed
+                primaryColor = new Vector4f(1, 1, 1, 1.0f); // Default color (white) for unknown ranges
+                // Apply brightness factor to primary color
+                primaryColor.mul(brightnessFactor);
+            }
+
+// You can use 'primaryColor' in your shader as needed
+            shader.setUniform("colorValue", primaryColor);
         }
     }
+
 
     public void render(Camera camera){
         clear();

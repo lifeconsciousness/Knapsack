@@ -1,5 +1,7 @@
 package com.knapsack.core;
 
+import com.knapsack.core.utils.Constants;
+
 public class MatrixManipulation {
     // how 3d matrix goes:
     // depth -> rows -> columns
@@ -104,8 +106,27 @@ public class MatrixManipulation {
         return false;
     }
 
+    static final float indexIncreaseStep = Constants.INDEX_INCREASE_STEP;
+    static float aIncrement = indexIncreaseStep;
+    static float bIncrement = indexIncreaseStep;
+    static float cIncrement = indexIncreaseStep;
+    static int counter = 0;
+
     public static float[][][] add (float[][][] field, int[][][] polycube, int depth, int rows, int columns){
         float[][][] result = field;
+
+        boolean isA = false;
+        boolean isB = false;
+        boolean isC = false;
+
+        if(counter > 15){
+            aIncrement = indexIncreaseStep;
+            bIncrement = indexIncreaseStep;
+            cIncrement = indexIncreaseStep;
+
+            counter = 0;
+        }
+        counter++;
 
         //depth
         for (int i = 0; i < polycube.length; i++) {
@@ -113,12 +134,31 @@ public class MatrixManipulation {
             for (int j = 0; j < polycube[i].length; j++) {
                 //columns
                 for (int k = 0; k < polycube[i][j].length; k++) {
-                    if(polycube[i][j][k] != -1){
-                        result[i + depth][j + rows][k + columns] = polycube[i][j][k];
+
+                    float index = polycube[i][j][k];
+
+                    if(index != -1){
+                        float resultingIndex = 0;
+                        if(index >= 1 && index < 2){
+                            resultingIndex = index + aIncrement;
+                            isA = true;
+                        } else if(index >= 2 &&  index < 3){
+                            resultingIndex = index + bIncrement;
+                            isB = true;
+                        }else if(index >= 3 &&  index < 4){
+                            resultingIndex = index + cIncrement;
+                            isC = true;
+                        }
+
+                        result[i + depth][j + rows][k + columns] = resultingIndex;
                     }
                 }
             }
         }
+
+        aIncrement += isA ? indexIncreaseStep : 0;
+        bIncrement += isB ? indexIncreaseStep : 0;
+        cIncrement += isC ? indexIncreaseStep : 0;
 
         return result;
     }

@@ -8,6 +8,7 @@ public class Polycubes {
     // empty space is marked by -1
 
     // length (depth): 1.0, width (columns): 1.0, height (rows): 2.0
+    // volume: 16
     public static final int[][][] aParcel = {
             {
                     {1, 1},
@@ -24,6 +25,7 @@ public class Polycubes {
     };
 
     //B: 1.0 x 1.5 x 2.0 depth col row
+    // volume: 24
     public static final int[][][] bParcel = {
             {
                     {2, 2, 2},
@@ -39,7 +41,8 @@ public class Polycubes {
             },
     };
 
-    //C: 1.5 x 1.5 x 1.5
+    // C: 1.5 x 1.5 x 1.5
+    // volume: 27
     public static final int[][][] cParcel = {
             {
                     {3, 3, 3},

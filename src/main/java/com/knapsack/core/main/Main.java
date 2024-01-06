@@ -31,11 +31,6 @@ public class Main implements ILogic {
     private Camera camera;
     Vector3f cameraInc;
 
-//    public static final int depth = 10;
-//    public static final int rows = 5;
-//    public static final int columns = 7;
-    int searchDepth;
-//    private static int[][][] field = new int[depth][rows][columns];
     private static float[][][] field;
 
     public Main(){
@@ -52,7 +47,6 @@ public class Main implements ILogic {
 
         //field should be 16.5 (33) long (depth), 2.5 (5) wide (col), 4.0 (8) high (rows)
         setField(33,8, 5);
-//        setField(10,4, 7);
         emptyField();
 
         OldAlgorithm oldAlgorithm = new OldAlgorithm();
