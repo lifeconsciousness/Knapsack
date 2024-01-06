@@ -6,9 +6,10 @@ public class Entity {
     private Model model;
     private Vector3f pos, rotation;
     private float scale;
-    private int index;
+    private float index;
+    private boolean isOutlined;
 
-    public Entity(Model model, Vector3f pos, Vector3f rotation, float scale, int index) {
+    public Entity(Model model, Vector3f pos, Vector3f rotation, float scale, float index) {
         this.model = model;
         this.pos = pos;
         this.rotation = rotation;
@@ -54,11 +55,11 @@ public class Entity {
         return scale;
     }
 
-    public int getIndex() {
+    public float getIndex() {
         return index;
     }
 
-    public void setIndex(int newIndex){
+    public void setIndex(float newIndex){
         this.index = newIndex;
     }
 }

@@ -37,7 +37,7 @@ j  org.lwjgl.opengl.GL30C.glGenVertexArrays()I+20
 j  org.lwjgl.opengl.GL30.glGenVertexArrays()I+0
 j  com.knapsack.core.ObjectLoader.createVAO()I+0
 j  com.knapsack.core.ObjectLoader.loadModel([F[F[I)Lcom/knapsack/core/entity/Model;+1
-j  com.knapsack.core.main.Game.renderField()V+13
+j  com.knapsack.core.main.Main.renderField()V+13
 j  com.knapsack.core.main.Launcher.main([Ljava/lang/String;)V+92
 v  ~StubRoutines::call_stub 0x000002079f8510e8
 

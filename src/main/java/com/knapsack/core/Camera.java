@@ -9,7 +9,7 @@ public class Camera {
 
     public Camera(){
 //        position = new Vector3f(3,2,-8); // without reverted x,y
-        position = new Vector3f(-3,-2,-8); // with reverted x,y
+        position = new Vector3f(-3,-3,-8); // with reverted x,y
         rotation = new Vector3f(0, 180,0);
     }
 

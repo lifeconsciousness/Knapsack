@@ -36,7 +36,7 @@ j  org.lwjgl.opengl.GL20C.glCreateProgram()I+0
 j  org.lwjgl.opengl.GL20.glCreateProgram()I+0
 j  com.knapsack.core.ShaderManager.<init>()V+5
 j  com.knapsack.core.RenderManager.init()V+5
-j  com.knapsack.core.main.Game.init()V+4
+j  com.knapsack.core.main.Main.init()V+4
 j  com.knapsack.core.main.Launcher.main([Ljava/lang/String;)V+92
 v  ~StubRoutines::call_stub 0x0000011d8f3d10e8
 

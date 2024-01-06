@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
-public class Game implements ILogic {
+public class Main implements ILogic {
     //TODO: visualize pentominoes using 3D matrices
     //TODO: add three dimentional matrix to store all pentominoes
     //TODO: comment everything !!!!
@@ -19,6 +19,8 @@ public class Game implements ILogic {
 
     private int direction = 0;
     private float color  = 0.0f;
+//    public float cubeScale = 0.5f;
+    public float cubeScale = 0.5f;
 
     private final RenderManager renderer;
     private final ObjectLoader loader;
@@ -29,13 +31,14 @@ public class Game implements ILogic {
     private Camera camera;
     Vector3f cameraInc;
 
-    public static final int depth = 10;
-    public static final int rows = 5;
-    public static final int columns = 7;
+//    public static final int depth = 10;
+//    public static final int rows = 5;
+//    public static final int columns = 7;
     int searchDepth;
-    private static int[][][] field = new int[depth][rows][columns];
+//    private static int[][][] field = new int[depth][rows][columns];
+    private static float[][][] field;
 
-    public Game(){
+    public Main(){
         renderer = new RenderManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();
@@ -47,13 +50,20 @@ public class Game implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
+        //field should be 16.5 (33) long (depth), 2.5 (5) wide (col), 4.0 (8) high (rows)
+        setField(33,8, 5);
+//        setField(10,4, 7);
+        emptyField();
+
+        OldAlgorithm oldAlgorithm = new OldAlgorithm();
+        oldAlgorithm.init();
+
+        //initialize model of the cube
         Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
 
         //bottom
         entities.add(new Entity(cubeModel, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f, 0));
 
-        // manipulating and displaying the field
-        field = MatrixManipulation.emptyField(field);
 
         //render the matrix
         for (int i = 0; i < field.length; i++) {
@@ -64,57 +74,17 @@ public class Game implements ILogic {
                     float y = -j;
                     float z = i;
 
-                    entities.add(new Entity(cubeModel, new Vector3f(x,y,z), new Vector3f(0,0,0), 0.5f, field[i][j][k]));
-                }
-            }
-        }
+                    if(field[i][j][k] == -1){
+                        cubeScale = 0.1f;
+                    } else{
+                        cubeScale = 0.5f;
+                    }
 
-        OldAlgorithm oldAlgorithm = new OldAlgorithm();
-        oldAlgorithm.init();
-    }
-
-    public static void addBlock(int[][][] block, int depth, int row, int column){
-        MatrixManipulation.add(field, block, depth, row, column);
-    }
-
-    public void colorBlocks(){
-        int counter = 1;
-
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j++) {
-                for (int k = 0; k < field[i][j].length; k++) {
-                    entities.get(counter).setIndex(field[i][j][k]);
-                    counter++;
+                    entities.add(new Entity(cubeModel, new Vector3f(x,y,z), new Vector3f(0,0,0), cubeScale, field[i][j][k]));
                 }
             }
         }
     }
-
-    public static void emptyVisualization(){
-        for(Entity entity : entities){
-            entity.setIndex(-1);
-        }
-    }
-
-    public static void emptyField(){
-        MatrixManipulation.emptyField(field);
-    }
-
-    public static void emptyFieldAndVisualization(){
-        emptyField();
-        emptyVisualization();
-    }
-
-    public static int[][][] rotateX(int[][][] matrix){
-        return MatrixManipulation.rotateX(matrix);
-    }
-    public static int[][][] rotateY(int[][][] matrix){
-        return MatrixManipulation.rotateY(matrix);
-    }
-    public static int[][][] rotateZ(int[][][] matrix){
-        return MatrixManipulation.rotateZ(matrix);
-    }
-
 
     @Override
     public void input() {
@@ -177,9 +147,61 @@ public class Game implements ILogic {
         loader.cleanup();
     }
 
+    // matrix and block manipulation functions
+
     public void colorRandomBlock(){
         Random random = new Random();
         entities.get(random.nextInt(200)).setIndex(1);
         entities.get(random.nextInt(200)).setIndex(1);
     }
+
+    public static void addBlock(int[][][] block, int depth, int row, int column){
+        MatrixManipulation.add(field, block, depth, row, column);
+    }
+
+    public void colorBlocks(){
+        int counter = 1;
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                for (int k = 0; k < field[i][j].length; k++) {
+                    entities.get(counter).setIndex(field[i][j][k]);
+                    counter++;
+                }
+            }
+        }
+    }
+
+    public static void emptyVisualization(){
+        for(Entity entity : entities){
+            entity.setIndex(-1);
+        }
+    }
+
+    public static void emptyField(){
+        MatrixManipulation.emptyField(field);
+    }
+
+    public static void emptyFieldAndVisualization(){
+        emptyField();
+        emptyVisualization();
+    }
+
+    public static int[][][] rotateX(int[][][] matrix){
+        return MatrixManipulation.rotateX(matrix);
+    }
+    public static int[][][] rotateY(int[][][] matrix){
+        return MatrixManipulation.rotateY(matrix);
+    }
+    public static int[][][] rotateZ(int[][][] matrix){
+        return MatrixManipulation.rotateZ(matrix);
+    }
+
+    public static void setField(int depth, int rows, int columns){
+        field = new float[depth][rows][columns];
+    }
+    public static float[][][] getField(){
+        return field;
+    }
+
 }

@@ -10,14 +10,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RenderManager {
     private final WindowManager window;
     private ShaderManager shader;
+    Random random = new Random();
+
 
     private Map<Model, List<Entity>> entities = new HashMap<>();
 
@@ -38,6 +37,7 @@ public class RenderManager {
 
 //        shader.createUniform("textureSampler");
         shader.createUniform("colorValue");
+//        shader.createUniform("isOutlined");
     }
 
     public void bind(Model model){
@@ -62,12 +62,35 @@ public class RenderManager {
         shader.setUniform("viewMatrix", Transformations.getViewMatrix(camera));
 
         //set color of a cube based on its index
-
-        int index = entity.getIndex();
+        float index = entity.getIndex();
         if(index == -1){
             //white
             shader.setUniform("colorValue", new Vector4f(1.0f, 1.0f, 1.0f, 0.5f));
-        }else if(index == 1){
+        }
+
+//        if(index != -1){
+//            // set color to random variation of blue, green or pink according to the index
+//            float red = random.nextFloat();
+//            float green = random.nextFloat();
+//            float blue;
+//
+//            if (index == 1) {
+//                // Blue
+//                blue = 1.0f;
+//            } else if (index == 2) {
+//                // Green
+//                blue = 0.0f;
+//            } else {
+//                // Pink
+//                blue = 1.0f;
+//            }
+//
+//            shader.setUniform("colorValue", new Vector4f(red, green, blue, 1.0f));
+//        }
+
+
+        //old code for coloring
+        else if(index == 1){
             // blue
             shader.setUniform("colorValue", new Vector4f(0, 1.0f, 1.0f, 1.0f));
         }else if(index == 2){

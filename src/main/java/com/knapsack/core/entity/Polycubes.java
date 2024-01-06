@@ -58,7 +58,7 @@ public class Polycubes {
             },
     };
 
-    public static final int[][][] matrix = {
+    public static final int[][][] testMatrix = {
             {
                     {-1, -1, -1, -1, -1},
                     {-1, -1, -1, -1, -1},

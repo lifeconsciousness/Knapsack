@@ -37,7 +37,7 @@ j  org.lwjgl.opengl.GL20.glCompileShader(I)V+1
 j  com.knapsack.core.ShaderManager.createShader(Ljava/lang/String;I)I+29
 j  com.knapsack.core.ShaderManager.createVertexShader(Ljava/lang/String;)V+5
 j  com.knapsack.core.RenderManager.init()V+20
-j  com.knapsack.core.main.Game.init()V+4
+j  com.knapsack.core.main.Main.init()V+4
 j  com.knapsack.core.EngineManager.init()V+51
 j  com.knapsack.core.EngineManager.start()V+1
 j  com.knapsack.core.main.Launcher.main([Ljava/lang/String;)V+38

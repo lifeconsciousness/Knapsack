@@ -104,8 +104,8 @@ public class MatrixManipulation {
         return false;
     }
 
-    public static int[][][] add (int[][][] field, int[][][] polycube, int depth, int rows, int columns){
-        int[][][] result = field;
+    public static float[][][] add (float[][][] field, int[][][] polycube, int depth, int rows, int columns){
+        float[][][] result = field;
 
         //depth
         for (int i = 0; i < polycube.length; i++) {
@@ -123,8 +123,8 @@ public class MatrixManipulation {
         return result;
     }
 
-    public static int[][][] emptyField (int[][][] field){
-        int[][][] result = field;
+    public static float[][][] emptyField (float[][][] field){
+        float[][][] result = field;
 
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
