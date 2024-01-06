@@ -9,7 +9,7 @@ public class MatrixManipulation {
     //  -->
     //    |
     //<-- v
-    public static int[][][] rotateAlongX (int[][][] matrix){
+    public static int[][][] rotateX (int[][][] matrix){
         int depth = matrix.length;
         int rows = matrix[0].length;
         int cols = matrix[0][0].length;
@@ -32,7 +32,7 @@ public class MatrixManipulation {
     // like stripper on the pole
     // --->
     //  <---
-    public static int[][][] rotateAlongY(int[][][] matrix) {
+    public static int[][][] rotateY(int[][][] matrix) {
         int depth = matrix.length;
         int rows = matrix[0].length;
         int cols = matrix[0][0].length;
@@ -56,7 +56,7 @@ public class MatrixManipulation {
     //  ^ ->
     //  |  |
     //  |  v
-    public static int[][][] rotateAlongZ (int[][][] matrix){
+    public static int[][][] rotateZ (int[][][] matrix){
         int depth = matrix.length;
         int rows = matrix[0].length;
         int cols = matrix[0][0].length;

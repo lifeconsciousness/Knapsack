@@ -2,12 +2,11 @@ package com.knapsack.core;
 
 import com.knapsack.core.entity.Entity;
 import com.knapsack.core.entity.Model;
-import com.knapsack.core.test.Launcher;
+import com.knapsack.core.main.Launcher;
 import com.knapsack.core.utils.Transformations;
 import com.knapsack.core.utils.Utils;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
@@ -67,10 +66,16 @@ public class RenderManager {
         int index = entity.getIndex();
         if(index == -1){
             //white
-            shader.setUniform("colorValue", new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
+            shader.setUniform("colorValue", new Vector4f(1.0f, 1.0f, 1.0f, 0.5f));
         }else if(index == 1){
             // blue
-            shader.setUniform("colorValue", new Vector4f(0, 1, 1.0f, 1.0f));
+            shader.setUniform("colorValue", new Vector4f(0, 1.0f, 1.0f, 1.0f));
+        }else if(index == 2){
+            // green
+            shader.setUniform("colorValue", new Vector4f(0, 1.0f, 0, 1.0f));
+        }else if(index == 3){
+            // pink
+            shader.setUniform("colorValue", new Vector4f(1, 0, 1, 1.0f));
         }
     }
 

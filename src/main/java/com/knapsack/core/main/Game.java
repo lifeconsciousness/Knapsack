@@ -1,4 +1,4 @@
-package com.knapsack.core.test;
+package com.knapsack.core.main;
 
 import com.knapsack.core.*;
 import com.knapsack.core.entity.*;
@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
-public class TestGame implements ILogic {
+public class Game implements ILogic {
     //TODO: visualize pentominoes using 3D matrices
     //TODO: add three dimentional matrix to store all pentominoes
     //TODO: comment everything !!!!
@@ -24,7 +24,7 @@ public class TestGame implements ILogic {
     private final ObjectLoader loader;
     private final WindowManager window;
 
-    private List<Entity> entities = new ArrayList<>();
+    private static List<Entity> entities = new ArrayList<>();
 
     private Camera camera;
     Vector3f cameraInc;
@@ -33,9 +33,9 @@ public class TestGame implements ILogic {
     public static final int rows = 5;
     public static final int columns = 7;
     int searchDepth;
-    public int[][][] field = new int[depth][rows][columns];
+    private static int[][][] field = new int[depth][rows][columns];
 
-    public TestGame(){
+    public Game(){
         renderer = new RenderManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();
@@ -47,8 +47,6 @@ public class TestGame implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
-        entities = new ArrayList<>();
-
         Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
 
         //bottom
@@ -57,19 +55,7 @@ public class TestGame implements ILogic {
         // manipulating and displaying the field
         field = MatrixManipulation.emptyField(field);
 
-        MatrixManipulation.add(field, Polycubes.aParcel, 0,0,0);
-
         //render the matrix
-        renderField();
-    }
-
-    public void searchTest() throws InterruptedException {
-
-    }
-
-    public void renderField(){
-        Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
-
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 for (int k = 0; k < field[i][j].length; k++) {
@@ -82,15 +68,16 @@ public class TestGame implements ILogic {
                 }
             }
         }
+
+        OldAlgorithm oldAlgorithm = new OldAlgorithm();
+        oldAlgorithm.init();
     }
 
-    public void colorRandomBlock(){
-        Random random = new Random();
-        entities.get(random.nextInt(200)).setIndex(1);
-        entities.get(random.nextInt(200)).setIndex(1);
+    public static void addBlock(int[][][] block, int depth, int row, int column){
+        MatrixManipulation.add(field, block, depth, row, column);
     }
 
-    public void colorBlock(){
+    public void colorBlocks(){
         int counter = 1;
 
         for (int i = 0; i < field.length; i++) {
@@ -103,11 +90,31 @@ public class TestGame implements ILogic {
         }
     }
 
-    public void emptyVisualization(){
+    public static void emptyVisualization(){
         for(Entity entity : entities){
             entity.setIndex(-1);
         }
     }
+
+    public static void emptyField(){
+        MatrixManipulation.emptyField(field);
+    }
+
+    public static void emptyFieldAndVisualization(){
+        emptyField();
+        emptyVisualization();
+    }
+
+    public static int[][][] rotateX(int[][][] matrix){
+        return MatrixManipulation.rotateX(matrix);
+    }
+    public static int[][][] rotateY(int[][][] matrix){
+        return MatrixManipulation.rotateY(matrix);
+    }
+    public static int[][][] rotateZ(int[][][] matrix){
+        return MatrixManipulation.rotateZ(matrix);
+    }
+
 
     @Override
     public void input() {
@@ -119,7 +126,6 @@ public class TestGame implements ILogic {
             cameraInc.z = 1;
         }
 
-        // normal
         if(window.isKeyPressed(GLFW.GLFW_KEY_A) || window.isKeyPressed(GLFW.GLFW_KEY_LEFT)){
             cameraInc.x = -1;
         }
@@ -158,7 +164,8 @@ public class TestGame implements ILogic {
             window.setResize(true);
         }
 
-        colorBlock();
+        colorBlocks();
+//        colorRandomBlock();
 
         window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         renderer.render(camera);
@@ -168,5 +175,11 @@ public class TestGame implements ILogic {
     public void cleanup() {
         renderer.cleanup();
         loader.cleanup();
+    }
+
+    public void colorRandomBlock(){
+        Random random = new Random();
+        entities.get(random.nextInt(200)).setIndex(1);
+        entities.get(random.nextInt(200)).setIndex(1);
     }
 }
