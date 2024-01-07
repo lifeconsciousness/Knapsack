@@ -22,7 +22,6 @@ public class OldAlgorithm {
 
     private void recursiveSearch(float[][][] field, List<int[][][]> parcels) throws InterruptedException {
         calls++;
-        System.out.println(calls);
 
         if (!solutionFound){
             // loop through all parcels
@@ -41,7 +40,8 @@ public class OldAlgorithm {
 //                                if (MatrixManipulation.amountEmptySpace(field) < 5) {
                                 if (parcels.size() < 20) {
                                     System.out.println("Solution found");
-//                                    Thread.sleep(20000);
+                                    System.out.println(calls);
+
                                     solutionFound = true;
                                 }
 

@@ -95,6 +95,7 @@ public class EngineManager {
     private void render(){
         gameLogic.render();
         window.update();
+
     }
     private void update(float interval){
         gameLogic.update(interval, mouseInput);

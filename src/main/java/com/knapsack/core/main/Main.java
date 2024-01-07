@@ -46,8 +46,8 @@ public class Main implements ILogic {
         renderer.init();
 
         //field should be 16.5 (33) long (depth), 2.5 (5) wide (col), 4.0 (8) high (rows)
-//        setField(33, 8, 5);
-        setField(4, 4, 2);
+        setField(33, 8, 5);
+//        setField(4, 4, 2);
         emptyField();
 
         //initialize model of the cube
@@ -79,8 +79,24 @@ public class Main implements ILogic {
         }
 
 
-        OldAlgorithm oldAlgorithm = new OldAlgorithm();
-//        oldAlgorithm.init();
+        //separate thread for the algorithm
+        Thread functionThread = new Thread(() -> {
+//            float counter = 0;
+//            while (counter < 999999999){
+//                counter+= 31f;
+//                System.out.println(counter);
+//            }
+
+            OldAlgorithm oldAlgorithm = new OldAlgorithm();
+            try {
+                oldAlgorithm.init();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // Start the thread
+        functionThread.start();
     }
 
     @Override
@@ -131,7 +147,7 @@ public class Main implements ILogic {
             window.setResize(true);
         }
 
-//        colorBlocks();
+        colorBlocks();
 //        colorRandomBlock();
 
         window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
