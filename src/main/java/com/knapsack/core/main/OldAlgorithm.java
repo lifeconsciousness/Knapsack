@@ -9,11 +9,11 @@ import java.util.List;
 
 public class OldAlgorithm {
     // take a combination of parcels and create a list out of it
-//    int[] aAmount = ParcelCombinations.aFits;
-    int[] aAmount = ParcelCombinations.aTest;
-    List<int[][][]> parcelsList = MatrixManipulation.createParcels(aAmount);
     int calls = 0;
     boolean solutionFound = false;
+
+    int[] aAmount = ParcelCombinations.aFits;
+    List<int[][][]> parcelsList = MatrixManipulation.createParcels(aAmount);
 
     public void init() throws InterruptedException {
         // attempt to fit only A's
@@ -25,8 +25,9 @@ public class OldAlgorithm {
 
         if (!solutionFound){
             // loop through all parcels
-            for (int currentParcel = 0; currentParcel < parcels.size(); currentParcel++) {
+            for (int currentParcel = 1; currentParcel < parcels.size(); currentParcel++) {
                 List<int[][][]> allRotations = MatrixManipulation.getAllRotations(parcels.get(currentParcel));
+                MatrixManipulation.removeDuplicates(allRotations);
 
                 // loop through all permutation of given pent
                 for (int mut = 0; mut < allRotations.size(); mut++) {
@@ -37,38 +38,37 @@ public class OldAlgorithm {
                             for (int x = 0; x < field[0][0].length; x++) { // columns
 
                                 // check if solution was found
-//                                if (MatrixManipulation.amountEmptySpace(field) < 5) {
-                                if (parcels.size() < 20) {
+                                 if (MatrixManipulation.amountEmptySpace(field) < 5) {
                                     System.out.println("Solution found");
                                     System.out.println(calls);
 
                                     solutionFound = true;
                                 }
 
-                                // choose mutation of the current pentomino
+                                // choose mutation of the current parcel
                                 int[][][] blockToPlace = allRotations.get(mut);
 
                                 // copy field in order to use it for branching
                                 float[][][] copiedField = MatrixManipulation.copyField(field);
 
-                                // check if current permutation of pentomino can be added on the x,y,z coordinates of the field
-                                if (MatrixManipulation.canAdd(field, blockToPlace, z, y, x)) {
+                                // check if current permutation of parcel can be added on the x,y,z coordinates of the field
+                                if (MatrixManipulation.canAdd(copiedField, blockToPlace, z, y, x)) {
 
-                                    // add pentomino to the copied field
-                                    MatrixManipulation.add(field, blockToPlace, z, y, x);
-                                    // ui.setState(copiedField); // display the field
+                                    // add parcel to the copied field
+                                    copiedField = MatrixManipulation.add(copiedField, blockToPlace, z, y, x);
+                                    // TODO: the original field remains unchanged
+//                                    Main.colorBlocks(copiedField);
+                                    Main.setField(copiedField);
 
-                                    // includes all pents except for the current one
+                                    // includes all parcels except for the current one
                                     List<int[][][]> filteredParcels = MatrixManipulation.deepCopy(parcels);
                                     //check if filtered parcels are empty
-                                    if(filteredParcels.size() > 1){
+                                    if(!filteredParcels.isEmpty()){
                                         filteredParcels.remove(currentParcel);
-                                    }
-
-                                    // if array of available parcels is not exhausted, recursively call the function again
-                                    if (!filteredParcels.isEmpty()) {
+                                        // if array of available parcels is not exhausted, recursively call the function again
                                         recursiveSearch(copiedField, filteredParcels);
                                     }
+
                                 }
                             }
                         }

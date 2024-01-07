@@ -139,22 +139,20 @@ public class MatrixManipulation {
                 for (int k = 0; k < polycube[i][j].length; k++) {
 
                     float index = polycube[i][j][k];
+                    float resultingIndex = 0;
 
-                    if (index != -1) {
-                        float resultingIndex = 0;
-                        if (index >= 1 && index < 2) {
-                            resultingIndex = index + aIncrement;
-                            isA = true;
-                        } else if (index >= 2 && index < 3) {
-                            resultingIndex = index + bIncrement;
-                            isB = true;
-                        } else if (index >= 3 && index < 4) {
-                            resultingIndex = index + cIncrement;
-                            isC = true;
-                        }
-
-                        result[i + depth][j + rows][k + columns] = resultingIndex;
+                    if (index >= 1 && index < 2) {
+                        resultingIndex = index + aIncrement;
+                        isA = true;
+                    } else if (index >= 2 && index < 3) {
+                        resultingIndex = index + bIncrement;
+                        isB = true;
+                    } else if (index >= 3 && index < 4) {
+                        resultingIndex = index + cIncrement;
+                        isC = true;
                     }
+
+                    result[i + depth][j + rows][k + columns] = resultingIndex;
                 }
             }
         }
@@ -204,7 +202,6 @@ public class MatrixManipulation {
             }
         }
 
-        removeDuplicates(rotations);
         return rotations;
     }
 
@@ -288,15 +285,8 @@ public class MatrixManipulation {
     public static List<int[][][]> deepCopy(List<int[][][]> originalList) {
         List<int[][][]> copiedList = new ArrayList<>();
 
-        for (int[][][] originalArray : originalList) {
-            int[][][] newArray = new int[originalArray.length][][];
-            for (int i = 0; i < originalArray.length; i++) {
-                newArray[i] = new int[originalArray[i].length][];
-                for (int j = 0; j < originalArray[i].length; j++) {
-                    newArray[i][j] = originalArray[i][j].clone();
-                }
-            }
-            copiedList.add(newArray);
+        for (int i = 0; i < originalList.size(); i++) {
+            copiedList.add(originalList.get(i));
         }
 
         return copiedList;

@@ -95,7 +95,7 @@ public class Main implements ILogic {
             }
         });
 
-        // Start the thread
+        functionThread.setPriority(Thread.MAX_PRIORITY);
         functionThread.start();
     }
 
@@ -185,6 +185,19 @@ public class Main implements ILogic {
         }
     }
 
+    public static void colorBlocks(float[][][] field) {
+        int counter = 1;
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                for (int k = 0; k < field[i][j].length; k++) {
+                    entities.get(counter).setIndex(field[i][j][k]);
+                    counter++;
+                }
+            }
+        }
+    }
+
     public static void emptyVisualization() {
         for (Entity entity : entities) {
             entity.setIndex(-1);
@@ -218,6 +231,10 @@ public class Main implements ILogic {
 
     public static float[][][] getField() {
         return field;
+    }
+
+    public static void setField(float[][][] newField) {
+        field = newField;
     }
 
 }
