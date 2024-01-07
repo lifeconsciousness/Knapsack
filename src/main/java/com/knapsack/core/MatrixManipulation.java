@@ -13,7 +13,7 @@ public class MatrixManipulation {
     //  -->
     //    |
     //<-- v
-    public static int[][][] rotateX (int[][][] matrix){
+    public static int[][][] rotateX(int[][][] matrix) {
         int depth = matrix.length;
         int rows = matrix[0].length;
         int cols = matrix[0][0].length;
@@ -60,7 +60,7 @@ public class MatrixManipulation {
     //  ^ ->
     //  |  |
     //  |  v
-    public static int[][][] rotateZ (int[][][] matrix){
+    public static int[][][] rotateZ(int[][][] matrix) {
         int depth = matrix.length;
         int rows = matrix[0].length;
         int cols = matrix[0][0].length;
@@ -79,7 +79,7 @@ public class MatrixManipulation {
         return rotatedMatrix;
     }
 
-    public static boolean canAdd (int[][][] field, int[][][] polycube, int depth, int rows, int columns){
+    public static boolean canAdd(float[][][] field, int[][][] polycube, int depth, int rows, int columns) {
         //check if trying to add out of bounds of the field
         try {
             if (depth + polycube.length > field.length || rows + polycube[0].length > field[0].length || columns + polycube[0][0].length > field[0][0].length) {
@@ -93,7 +93,7 @@ public class MatrixManipulation {
                 for (int j = 0; j < polycube[i].length; j++) {
                     //columns
                     for (int k = 0; k < polycube[i][j].length; k++) {
-                        if(field[i + depth][j + rows][k + columns] != -1){
+                        if (field[i + depth][j + rows][k + columns] != -1) {
                             return false;
                         }
                     }
@@ -101,7 +101,7 @@ public class MatrixManipulation {
             }
 
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Exception in canAdd: " + e);
         }
 
@@ -114,14 +114,14 @@ public class MatrixManipulation {
     static float cIncrement = indexIncreaseStep;
     static int counter = 0;
 
-    public static float[][][] add (float[][][] field, int[][][] polycube, int depth, int rows, int columns){
+    public static float[][][] add(float[][][] field, int[][][] polycube, int depth, int rows, int columns) {
         float[][][] result = field;
 
         boolean isA = false;
         boolean isB = false;
         boolean isC = false;
 
-        if(counter > 15){
+        if (counter > 15) {
             aIncrement = indexIncreaseStep;
             bIncrement = indexIncreaseStep;
             cIncrement = indexIncreaseStep;
@@ -139,15 +139,15 @@ public class MatrixManipulation {
 
                     float index = polycube[i][j][k];
 
-                    if(index != -1){
+                    if (index != -1) {
                         float resultingIndex = 0;
-                        if(index >= 1 && index < 2){
+                        if (index >= 1 && index < 2) {
                             resultingIndex = index + aIncrement;
                             isA = true;
-                        } else if(index >= 2 &&  index < 3){
+                        } else if (index >= 2 && index < 3) {
                             resultingIndex = index + bIncrement;
                             isB = true;
-                        }else if(index >= 3 &&  index < 4){
+                        } else if (index >= 3 && index < 4) {
                             resultingIndex = index + cIncrement;
                             isC = true;
                         }
@@ -165,7 +165,7 @@ public class MatrixManipulation {
         return result;
     }
 
-    public static float[][][] emptyField (float[][][] field){
+    public static float[][][] emptyField(float[][][] field) {
         float[][][] result = field;
 
         for (int i = 0; i < field.length; i++) {
@@ -179,15 +179,15 @@ public class MatrixManipulation {
         return result;
     }
 
-    public static void displayField (int[][][] field){
+    public static void displayField(int[][][] field) {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 for (int k = 0; k < field[i][j].length; k++) {
                     System.out.print(field[i][j][k] + " ");
                 }
-            System.out.println("");
+                System.out.println("");
             }
-        System.out.println("");
+            System.out.println("");
         }
     }
 
@@ -203,6 +203,7 @@ public class MatrixManipulation {
             }
         }
 
+        removeDuplicates(rotations);
         return rotations;
     }
 
@@ -222,5 +223,45 @@ public class MatrixManipulation {
         }
 
         return rotatedMatrix;
+    }
+
+    public static void removeDuplicates(List<int[][][]> matrixList) {
+        Set<String> matrixSignatures = new HashSet<>();
+        Iterator<int[][][]> iterator = matrixList.iterator();
+
+        while (iterator.hasNext()) {
+            int[][][] currentMatrix = iterator.next();
+            String matrixSignature = getMatrixSignature(currentMatrix);
+
+            if (!matrixSignatures.add(matrixSignature)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private static String getMatrixSignature(int[][][] matrix) {
+        StringBuilder signature = new StringBuilder();
+        for (int i = 0; i < matrix.length; i++) {
+            signature.append(matrix[i].length).append("x").append(matrix[i][0].length).append(";");
+        }
+        return signature.toString();
+    }
+
+    public static float[][][] copyField(float[][][] field) {
+        float[][][] copiedField =  new float[field.length][field[0].length][field[0][0].length];
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                for (int k = 0; k < field[i][j].length; k++) {
+                    copiedField[i][j][k] = field[i][j][k];
+                }
+            }
+        }
+
+        return copiedField;
+    }
+
+    public List<int[][][]> createParcels (int[] amountArray){
+
     }
 }

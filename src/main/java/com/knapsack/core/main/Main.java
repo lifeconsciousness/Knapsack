@@ -18,8 +18,8 @@ public class Main implements ILogic {
     private static final float CAMERA_MOVE_SPEED = 0.015f;
 
     private int direction = 0;
-    private float color  = 0.0f;
-//    public float cubeScale = 0.5f;
+    private float color = 0.0f;
+    //    public float cubeScale = 0.5f;
     public float cubeScale = 0.5f;
 
     private final RenderManager renderer;
@@ -33,12 +33,12 @@ public class Main implements ILogic {
 
     private static float[][][] field;
 
-    public Main(){
+    public Main() {
         renderer = new RenderManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();
         camera = new Camera();
-        cameraInc = new Vector3f(0,0,0);
+        cameraInc = new Vector3f(0, 0, 0);
     }
 
     @Override
@@ -46,22 +46,22 @@ public class Main implements ILogic {
         renderer.init();
 
         //field should be 16.5 (33) long (depth), 2.5 (5) wide (col), 4.0 (8) high (rows)
-        setField(33,8, 5);
+        setField(33, 8, 5);
         emptyField();
 
-//        OldAlgorithm oldAlgorithm = new OldAlgorithm();
-//        oldAlgorithm.init();
+        OldAlgorithm oldAlgorithm = new OldAlgorithm();
+        oldAlgorithm.init();
 
-        List<int[][][]> allRotations = MatrixManipulation.getAllRotations(Polycubes.aParcel);
-            System.out.println(allRotations.size());
+//        List<int[][][]> allRotations = MatrixManipulation.getAllRotations(Polycubes.bParcel);
+//        System.out.println(allRotations.size());
 
-            MatrixManipulation.displayField(allRotations.get(2));
+
 
         //initialize model of the cube
         Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
 
         //bottom
-        entities.add(new Entity(cubeModel, new Vector3f(0,-100,0), new Vector3f(0,0,0), 100f, 0));
+        entities.add(new Entity(cubeModel, new Vector3f(0, -100, 0), new Vector3f(0, 0, 0), 100f, 0));
 
 
         //render the matrix
@@ -73,13 +73,13 @@ public class Main implements ILogic {
                     float y = -j;
                     float z = i;
 
-                    if(field[i][j][k] == -1){
+                    if (field[i][j][k] == -1) {
                         cubeScale = 0.1f;
-                    } else{
+                    } else {
                         cubeScale = 0.5f;
                     }
 
-                    entities.add(new Entity(cubeModel, new Vector3f(x,y,z), new Vector3f(0,0,0), cubeScale, field[i][j][k]));
+                    entities.add(new Entity(cubeModel, new Vector3f(x, y, z), new Vector3f(0, 0, 0), cubeScale, field[i][j][k]));
                 }
             }
         }
@@ -87,25 +87,25 @@ public class Main implements ILogic {
 
     @Override
     public void input() {
-        cameraInc.set(0,0,0);
-        if(window.isKeyPressed(GLFW.GLFW_KEY_W)){
+        cameraInc.set(0, 0, 0);
+        if (window.isKeyPressed(GLFW.GLFW_KEY_W)) {
             cameraInc.z = -1;
         }
-        if(window.isKeyPressed(GLFW.GLFW_KEY_S)){
+        if (window.isKeyPressed(GLFW.GLFW_KEY_S)) {
             cameraInc.z = 1;
         }
 
-        if(window.isKeyPressed(GLFW.GLFW_KEY_A) || window.isKeyPressed(GLFW.GLFW_KEY_LEFT)){
+        if (window.isKeyPressed(GLFW.GLFW_KEY_A) || window.isKeyPressed(GLFW.GLFW_KEY_LEFT)) {
             cameraInc.x = -1;
         }
-        if(window.isKeyPressed(GLFW.GLFW_KEY_D) || window.isKeyPressed(GLFW.GLFW_KEY_RIGHT)){
+        if (window.isKeyPressed(GLFW.GLFW_KEY_D) || window.isKeyPressed(GLFW.GLFW_KEY_RIGHT)) {
             cameraInc.x = 1;
         }
 
-        if(window.isKeyPressed(GLFW.GLFW_KEY_Z) || window.isKeyPressed(GLFW.GLFW_KEY_DOWN)){
+        if (window.isKeyPressed(GLFW.GLFW_KEY_Z) || window.isKeyPressed(GLFW.GLFW_KEY_DOWN)) {
             cameraInc.y = -1;
         }
-        if(window.isKeyPressed(GLFW.GLFW_KEY_X)  || window.isKeyPressed(GLFW.GLFW_KEY_UP)){
+        if (window.isKeyPressed(GLFW.GLFW_KEY_X) || window.isKeyPressed(GLFW.GLFW_KEY_UP)) {
             cameraInc.y = 1;
         }
     }
@@ -114,12 +114,12 @@ public class Main implements ILogic {
     public void update(float interval, MouseInput mouseInput) {
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED, cameraInc.y * CAMERA_MOVE_SPEED, cameraInc.z * CAMERA_MOVE_SPEED);
 
-        if(mouseInput.isLeftButtonPress()){
+        if (mouseInput.isLeftButtonPress()) {
             Vector2f rotVector = mouseInput.getDisplayVector();
             camera.moveRotation(rotVector.x * Constants.MOUSE_SENSITIVITY, rotVector.y * Constants.MOUSE_SENSITIVITY, 0);
         }
 
-        for(Entity entity : entities){
+        for (Entity entity : entities) {
             renderer.processEntity(entity);
         }
     }
@@ -128,7 +128,7 @@ public class Main implements ILogic {
     public void render() {
         emptyVisualization();
 
-        if(window.isResize()){
+        if (window.isResize()) {
             GL11.glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResize(true);
         }
@@ -148,17 +148,17 @@ public class Main implements ILogic {
 
     // matrix and block manipulation functions
 
-    public void colorRandomBlock(){
+    public void colorRandomBlock() {
         Random random = new Random();
         entities.get(random.nextInt(200)).setIndex(1);
         entities.get(random.nextInt(200)).setIndex(1);
     }
 
-    public static void addBlock(int[][][] block, int depth, int row, int column){
+    public static void addBlock(int[][][] block, int depth, int row, int column) {
         MatrixManipulation.add(field, block, depth, row, column);
     }
 
-    public void colorBlocks(){
+    public void colorBlocks() {
         int counter = 1;
 
         for (int i = 0; i < field.length; i++) {
@@ -171,35 +171,38 @@ public class Main implements ILogic {
         }
     }
 
-    public static void emptyVisualization(){
-        for(Entity entity : entities){
+    public static void emptyVisualization() {
+        for (Entity entity : entities) {
             entity.setIndex(-1);
         }
     }
 
-    public static void emptyField(){
+    public static void emptyField() {
         MatrixManipulation.emptyField(field);
     }
 
-    public static void emptyFieldAndVisualization(){
+    public static void emptyFieldAndVisualization() {
         emptyField();
         emptyVisualization();
     }
 
-    public static int[][][] rotateX(int[][][] matrix){
+    public static int[][][] rotateX(int[][][] matrix) {
         return MatrixManipulation.rotateX(matrix);
     }
-    public static int[][][] rotateY(int[][][] matrix){
+
+    public static int[][][] rotateY(int[][][] matrix) {
         return MatrixManipulation.rotateY(matrix);
     }
-    public static int[][][] rotateZ(int[][][] matrix){
+
+    public static int[][][] rotateZ(int[][][] matrix) {
         return MatrixManipulation.rotateZ(matrix);
     }
 
-    public static void setField(int depth, int rows, int columns){
+    public static void setField(int depth, int rows, int columns) {
         field = new float[depth][rows][columns];
     }
-    public static float[][][] getField(){
+
+    public static float[][][] getField() {
         return field;
     }
 
