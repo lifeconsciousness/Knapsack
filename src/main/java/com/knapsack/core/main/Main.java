@@ -49,8 +49,13 @@ public class Main implements ILogic {
         setField(33,8, 5);
         emptyField();
 
-        OldAlgorithm oldAlgorithm = new OldAlgorithm();
-        oldAlgorithm.init();
+//        OldAlgorithm oldAlgorithm = new OldAlgorithm();
+//        oldAlgorithm.init();
+
+        List<int[][][]> allRotations = MatrixManipulation.getAllRotations(Polycubes.aParcel);
+            System.out.println(allRotations.size());
+
+            MatrixManipulation.displayField(allRotations.get(2));
 
         //initialize model of the cube
         Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);

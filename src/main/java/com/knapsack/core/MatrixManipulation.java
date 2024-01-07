@@ -2,6 +2,8 @@ package com.knapsack.core;
 
 import com.knapsack.core.utils.Constants;
 
+import java.util.*;
+
 public class MatrixManipulation {
     // how 3d matrix goes:
     // depth -> rows -> columns
@@ -187,5 +189,38 @@ public class MatrixManipulation {
             }
         System.out.println("");
         }
+    }
+
+    public static List<int[][][]> getAllRotations(int[][][] originalMatrix) {
+        List<int[][][]> rotations = new ArrayList<>();
+
+        for (int xRotation = 0; xRotation < 4; xRotation++) {
+            for (int yRotation = 0; yRotation < 4; yRotation++) {
+                for (int zRotation = 0; zRotation < 4; zRotation++) {
+                    int[][][] rotatedMatrix = rotate(originalMatrix, xRotation, yRotation, zRotation);
+                    rotations.add(rotatedMatrix);
+                }
+            }
+        }
+
+        return rotations;
+    }
+
+    public static int[][][] rotate(int[][][] matrix, int xRotations, int yRotations, int zRotations) {
+        int[][][] rotatedMatrix = matrix;
+
+        for (int i = 0; i < xRotations; i++) {
+            rotatedMatrix = rotateX(rotatedMatrix);
+        }
+
+        for (int i = 0; i < yRotations; i++) {
+            rotatedMatrix = rotateY(rotatedMatrix);
+        }
+
+        for (int i = 0; i < zRotations; i++) {
+            rotatedMatrix = rotateZ(rotatedMatrix);
+        }
+
+        return rotatedMatrix;
     }
 }
