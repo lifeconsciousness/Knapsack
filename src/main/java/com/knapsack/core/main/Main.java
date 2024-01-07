@@ -46,16 +46,9 @@ public class Main implements ILogic {
         renderer.init();
 
         //field should be 16.5 (33) long (depth), 2.5 (5) wide (col), 4.0 (8) high (rows)
-        setField(33, 8, 5);
+//        setField(33, 8, 5);
+        setField(4, 4, 2);
         emptyField();
-
-        OldAlgorithm oldAlgorithm = new OldAlgorithm();
-        oldAlgorithm.init();
-
-//        List<int[][][]> allRotations = MatrixManipulation.getAllRotations(Polycubes.bParcel);
-//        System.out.println(allRotations.size());
-
-
 
         //initialize model of the cube
         Model cubeModel = loader.loadModel(Cube.vertices, Cube.textureCoords, Cube.indices);
@@ -78,11 +71,16 @@ public class Main implements ILogic {
                     } else {
                         cubeScale = 0.5f;
                     }
+                    cubeScale = 0.5f;
 
                     entities.add(new Entity(cubeModel, new Vector3f(x, y, z), new Vector3f(0, 0, 0), cubeScale, field[i][j][k]));
                 }
             }
         }
+
+
+        OldAlgorithm oldAlgorithm = new OldAlgorithm();
+//        oldAlgorithm.init();
     }
 
     @Override
@@ -133,7 +131,7 @@ public class Main implements ILogic {
             window.setResize(true);
         }
 
-        colorBlocks();
+//        colorBlocks();
 //        colorRandomBlock();
 
         window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);

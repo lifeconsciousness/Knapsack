@@ -1,5 +1,6 @@
 package com.knapsack.core;
 
+import com.knapsack.core.entity.Polycubes;
 import com.knapsack.core.utils.Constants;
 
 import java.util.*;
@@ -261,7 +262,59 @@ public class MatrixManipulation {
         return copiedField;
     }
 
-    public List<int[][][]> createParcels (int[] amountArray){
+    public static List<int[][][]> createParcels (int[] amountArray){
+        List<int[][][]> parcels = new ArrayList<>();
 
+        for(int i = 0; i < amountArray.length; i++){
+            if(i == 0){
+                for(int j = 0; j < amountArray[0]; j++){
+                    parcels.add(Polycubes.aParcel);
+                }
+            } else if (i == 1) {
+                for(int j = 0; j < amountArray[1]; j++){
+                    parcels.add(Polycubes.bParcel);
+                }
+            }else if (i == 2) {
+                for(int j = 0; j < amountArray[2]; j++){
+                    parcels.add(Polycubes.cParcel);
+                }
+            }
+            //expand if needed
+        }
+
+        return parcels;
+    }
+
+    public static List<int[][][]> deepCopy(List<int[][][]> originalList) {
+        List<int[][][]> copiedList = new ArrayList<>();
+
+        for (int[][][] originalArray : originalList) {
+            int[][][] newArray = new int[originalArray.length][][];
+            for (int i = 0; i < originalArray.length; i++) {
+                newArray[i] = new int[originalArray[i].length][];
+                for (int j = 0; j < originalArray[i].length; j++) {
+                    newArray[i][j] = originalArray[i][j].clone();
+                }
+            }
+            copiedList.add(newArray);
+        }
+
+        return copiedList;
+    }
+
+    public static int amountEmptySpace(float[][][] field) {
+        int amount = 0;
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                for (int k = 0; k < field[i][j].length; k++) {
+                    if(field[i][j][k] == -1){
+                        amount++;
+                    }
+                }
+            }
+        }
+
+        return amount;
     }
 }

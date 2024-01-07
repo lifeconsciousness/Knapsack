@@ -7,6 +7,7 @@ public class ParcelCombinations {
     // parcel C: 27 units | 48 parcels fit with 24 units of empty space
 
     // combinations: A, B, C, AB, BC, AC, ABC
+    public static int[] aTest = {2};
     public static int[] aFits = {82};
     public static int[] aDoesntFit = {84};
     public static int[] bFits = {55};
