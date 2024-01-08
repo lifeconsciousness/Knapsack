@@ -49,7 +49,7 @@ public class Main implements ILogic {
 
         //field should be 16.5 (33) long (depth), 2.5 (5) wide (col), 4.0 (8) high (rows)
         setField(33, 8, 5);
-//        setField(4, 4, 2);
+//        setField(32, 8, 4);
         emptyField();
 
         //initialize model of the cube
@@ -74,6 +74,7 @@ public class Main implements ILogic {
                         cubeScale = 0.5f;
                     }
                     cubeScale = 0.5f;
+//                    cubeScale = 1f;
 
                     entities.add(new Entity(cubeModel, new Vector3f(x, y, z), new Vector3f(0, 0, 0), cubeScale, field[i][j][k]));
                 }
@@ -96,10 +97,12 @@ public class Main implements ILogic {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         OldAlgorithm oldAlgorithm = new OldAlgorithm();
+        NewAlgorithm newAlgorithm = new NewAlgorithm();
 
         executor.submit(() -> {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
+//            newAlgorithm.init();
             try {
                 oldAlgorithm.init();
             } catch (InterruptedException e) {

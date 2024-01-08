@@ -12,13 +12,11 @@ public class OldAlgorithm {
     int calls = 0;
     boolean solutionFound = false;
 
-    int[] aAmount = ParcelCombinations.aFits;
+    int[] aAmount = ParcelCombinations.bFitsFast;
     List<int[][][]> parcelsList = MatrixManipulation.createParcels(aAmount);
-    List<int[][][]> allRotations = MatrixManipulation.getAllRotations(Polycubes.aParcel);
 
 
     public void init() throws InterruptedException {
-        // attempt to fit only A's
         recursiveSearch(Main.getField(), parcelsList);
     }
 
@@ -28,7 +26,7 @@ public class OldAlgorithm {
         if (!solutionFound){
             // loop through all parcels
             for (int currentParcel = 0; currentParcel < parcels.size(); currentParcel++) {
-//                List<int[][][]> allRotations = MatrixManipulation.getAllRotations(parcels.get(currentParcel));
+                List<int[][][]> allRotations = MatrixManipulation.getAllRotations(parcels.get(currentParcel));
                 MatrixManipulation.removeDuplicates(allRotations);
 
                 // loop through all permutation of given pent
@@ -58,7 +56,6 @@ public class OldAlgorithm {
 
                                     // add parcel to the copied field
                                     copiedField = MatrixManipulation.add(copiedField, blockToPlace, z, y, x);
-                                    // TODO: the original field remains unchanged
                                     Main.setField(copiedField);
 
                                     // includes all parcels except for the current one

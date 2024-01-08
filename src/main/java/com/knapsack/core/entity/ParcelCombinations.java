@@ -8,10 +8,11 @@ public class ParcelCombinations {
 
     // combinations: A, B, C, AB, BC, AC, ABC
     public static int[] aTest = {2};
-    public static int[] aFits = {82};
+    public static int[] aFits = {82, 0, 0};
     public static int[] aDoesntFit = {84};
-    public static int[] bFits = {55};
-    public static int[] cFits = {48};
+    public static int[] bFits = {0, 55, 0};
+    public static int[] bFitsFast = {55};
+    public static int[] cFits = {0, 0, 48};
     public static int[] cDoesntFit = {50};
 
     // numbers for combinations of parcels are random
