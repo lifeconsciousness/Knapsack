@@ -9,6 +9,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main implements ILogic {
     //TODO: visualize pentominoes using 3D matrices
@@ -79,24 +81,34 @@ public class Main implements ILogic {
         }
 
 
-        //separate thread for the algorithm
-        Thread functionThread = new Thread(() -> {
-//            float counter = 0;
-//            while (counter < 999999999){
-//                counter+= 31f;
-//                System.out.println(counter);
+//        //separate thread for the algorithm
+//        Thread functionThread = new Thread(() -> {
+//            OldAlgorithm oldAlgorithm = new OldAlgorithm();
+//            try {
+//                oldAlgorithm.init();
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
 //            }
+//        });
+//
+//        functionThread.setPriority(Thread.MAX_PRIORITY);
+//        functionThread.start();
 
-            OldAlgorithm oldAlgorithm = new OldAlgorithm();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        OldAlgorithm oldAlgorithm = new OldAlgorithm();
+
+        executor.submit(() -> {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
             try {
                 oldAlgorithm.init();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
 
-        functionThread.setPriority(Thread.MAX_PRIORITY);
-        functionThread.start();
+        // Shutdown the executor when done
+        executor.shutdown();
     }
 
     @Override

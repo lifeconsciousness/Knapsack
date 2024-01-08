@@ -14,6 +14,8 @@ public class OldAlgorithm {
 
     int[] aAmount = ParcelCombinations.aFits;
     List<int[][][]> parcelsList = MatrixManipulation.createParcels(aAmount);
+    List<int[][][]> allRotations = MatrixManipulation.getAllRotations(Polycubes.aParcel);
+
 
     public void init() throws InterruptedException {
         // attempt to fit only A's
@@ -25,8 +27,8 @@ public class OldAlgorithm {
 
         if (!solutionFound){
             // loop through all parcels
-            for (int currentParcel = 1; currentParcel < parcels.size(); currentParcel++) {
-                List<int[][][]> allRotations = MatrixManipulation.getAllRotations(parcels.get(currentParcel));
+            for (int currentParcel = 0; currentParcel < parcels.size(); currentParcel++) {
+//                List<int[][][]> allRotations = MatrixManipulation.getAllRotations(parcels.get(currentParcel));
                 MatrixManipulation.removeDuplicates(allRotations);
 
                 // loop through all permutation of given pent
@@ -43,7 +45,7 @@ public class OldAlgorithm {
                                     System.out.println(calls);
 
                                     solutionFound = true;
-                                }
+                                 }
 
                                 // choose mutation of the current parcel
                                 int[][][] blockToPlace = allRotations.get(mut);
@@ -57,13 +59,12 @@ public class OldAlgorithm {
                                     // add parcel to the copied field
                                     copiedField = MatrixManipulation.add(copiedField, blockToPlace, z, y, x);
                                     // TODO: the original field remains unchanged
-//                                    Main.colorBlocks(copiedField);
                                     Main.setField(copiedField);
 
                                     // includes all parcels except for the current one
                                     List<int[][][]> filteredParcels = MatrixManipulation.deepCopy(parcels);
                                     //check if filtered parcels are empty
-                                    if(!filteredParcels.isEmpty()){
+                                    if(!parcels.isEmpty()){
                                         filteredParcels.remove(currentParcel);
                                         // if array of available parcels is not exhausted, recursively call the function again
                                         recursiveSearch(copiedField, filteredParcels);

@@ -250,9 +250,7 @@ public class MatrixManipulation {
 
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
-                for (int k = 0; k < field[i][j].length; k++) {
-                    copiedField[i][j][k] = field[i][j][k];
-                }
+                System.arraycopy(field[i][j], 0, copiedField[i][j], 0, field[i][j].length);
             }
         }
 
@@ -285,9 +283,7 @@ public class MatrixManipulation {
     public static List<int[][][]> deepCopy(List<int[][][]> originalList) {
         List<int[][][]> copiedList = new ArrayList<>();
 
-        for (int i = 0; i < originalList.size(); i++) {
-            copiedList.add(originalList.get(i));
-        }
+        copiedList.addAll(originalList);
 
         return copiedList;
     }
