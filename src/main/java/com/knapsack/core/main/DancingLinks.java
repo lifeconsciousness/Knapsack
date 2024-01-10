@@ -36,7 +36,7 @@ public class DancingLinks {
     }
 
     public void initializeMatrix(float[][][] field, List<int[][][]> parcels) {
-        int numRows = field.length * field[0].length * field[0][0].length;
+        int numRows = calculateNumWays(field, parcels);
         int numCols = parcels.size() + field.length * field[0].length * field[0][0].length;
 
         // Create header nodes for each column
@@ -57,30 +57,40 @@ public class DancingLinks {
         Node[][] matrixNodes = new Node[numRows][numCols];
         int nodeCount = 0;
 
+        // Go through every position of the field
         for (int z = 0; z < field.length; z++) {
             for (int y = 0; y < field[0].length; y++) {
                 for (int x = 0; x < field[0][0].length; x++) {
                     for (int currentParcel = 0; currentParcel < parcels.size(); currentParcel++) {
                         int[][][] parcel = parcels.get(currentParcel);
 
-                        if (MatrixManipulation.canAdd(field, parcel, z, y, x)) {
-                            // Create a node for this combination of parcel and field position
-                            Node node = new Node(columnNodes[currentParcel]);
-                            matrixNodes[nodeCount][currentParcel] = node;
+                        // Try all rotations of the parcel
+                        for (int xRotations = 0; xRotations < 4; xRotations++) {
+                            for (int yRotations = 0; yRotations < 4; yRotations++) {
+                                for (int zRotations = 0; zRotations < 4; zRotations++) {
+                                    int[][][] rotatedParcel = MatrixManipulation.rotate(parcel, xRotations, yRotations, zRotations);
 
-                            // Link it horizontally
-                            node.left = (nodeCount > 0) ? matrixNodes[nodeCount - 1][currentParcel] : node;
-                            node.right = node;
+                                    if (MatrixManipulation.canAdd(field, rotatedParcel, z, y, x)) {
+                                        // Create a node for this combination of parcel and field position
+                                        Node node = new Node(columnNodes[currentParcel]);
+                                        matrixNodes[nodeCount][currentParcel] = node;
 
-                            // Link it vertically
-                            if (nodeCount > 0) {
-                                matrixNodes[nodeCount - 1][currentParcel].down = node;
-                                node.up = matrixNodes[nodeCount - 1][currentParcel];
+                                        // Link it horizontally
+                                        node.left = (nodeCount > 0) ? matrixNodes[nodeCount - 1][currentParcel] : node;
+                                        node.right = node;
+
+                                        // Link it vertically
+                                        if (nodeCount > 0) {
+                                            matrixNodes[nodeCount - 1][currentParcel].down = node;
+                                            node.up = matrixNodes[nodeCount - 1][currentParcel];
+                                        }
+
+                                        // Increase the size of the corresponding column
+                                        columnNodes[currentParcel].size++;
+                                        nodeCount++;
+                                    }
+                                }
                             }
-
-                            // Increase the size of the corresponding column
-                            columnNodes[currentParcel].size++;
-                            nodeCount++;
                         }
                     }
                 }
@@ -102,6 +112,35 @@ public class DancingLinks {
                 }
             }
         }
+    }
+
+    private int calculateNumWays(float[][][] field, List<int[][][]> parcels) {
+        int count = 0;
+
+        for (int z = 0; z < field.length; z++) {
+            for (int y = 0; y < field[0].length; y++) {
+                for (int x = 0; x < field[0][0].length; x++) {
+                    for (int currentParcel = 0; currentParcel < parcels.size(); currentParcel++) {
+                        int[][][] parcel = parcels.get(currentParcel);
+
+                        // Try all rotations of the parcel
+                        for (int xRotations = 0; xRotations < 4; xRotations++) {
+                            for (int yRotations = 0; yRotations < 4; yRotations++) {
+                                for (int zRotations = 0; zRotations < 4 ; zRotations++) {
+                                    int[][][] rotatedParcel = MatrixManipulation.rotate(parcel, xRotations, yRotations, zRotations);
+
+                                    if (MatrixManipulation.canAdd(field, rotatedParcel, z, y, x)) {
+                                        count++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 
     public boolean isEmpty() {
